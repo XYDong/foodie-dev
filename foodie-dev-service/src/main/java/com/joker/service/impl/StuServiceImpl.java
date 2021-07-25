@@ -18,8 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class StuServiceImpl implements StuService {
-    @Autowired
-    private StuMapper stuMapper;
+
+    private final StuMapper stuMapper;
+
+    public StuServiceImpl(StuMapper stuMapper) {
+        this.stuMapper = stuMapper;
+    }
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
@@ -27,18 +31,57 @@ public class StuServiceImpl implements StuService {
         return stuMapper.selectByPrimaryKey(id);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void saveStu() {
-
+        Stu stu = new Stu();
+        stu.setName("Joker");
+        stu.setAge(18);
+        stuMapper.insert(stu);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void updateStud(int id) {
-
+    public void updateStu(int id) {
+        Stu stu = new Stu();
+        stu.setId(id);
+        stu.setName("李四");
+        stuMapper.updateByPrimaryKey(stu);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void deleteStu(int id) {
+        Stu stu = new Stu();
+        stu.setId(id);
+        stuMapper.delete(stu);
+    }
 
+    public void saveParent() {
+        Stu stu = new Stu();
+        stu.setName("parent");
+        stu.setAge(19);
+        stuMapper.insert(stu);
+    }
+
+    @Transactional(propagation = Propagation.NESTED)
+    public void saveChildren() {
+        savaChild1();
+        int a = 1 / 0;
+        saveChildren2();
+    }
+
+    private void savaChild1() {
+        Stu stu1 = new Stu();
+        stu1.setName("child-1");
+        stu1.setAge(11);
+        stuMapper.insert(stu1);
+    }
+
+    private void saveChildren2() {
+        Stu stu2 = new Stu();
+        stu2.setName("child-2");
+        stu2.setAge(22);
+        stuMapper.insert(stu2);
     }
 }
