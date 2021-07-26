@@ -4,6 +4,8 @@ import com.joker.mapper.CarouselMapper;
 import com.joker.pojo.Carousel;
 import com.joker.service.CarouselService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class CarouselServiceImpl implements CarouselService {
         this.carouselMapper = carouselMapper;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public List<Carousel> queryAll(Integer isShow) {
         Example example = new Example(Carousel.class);
