@@ -2,6 +2,7 @@ package com.joker.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @version 1.0.0
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @CreateTime 2021年07月23日 13:57:00
  */
 @RestController
+@ApiIgnore
 public class HelloController {
 
     @GetMapping("/hello")

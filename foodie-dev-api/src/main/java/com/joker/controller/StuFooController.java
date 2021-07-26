@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @version 1.0.0
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Description
  * @CreateTime 2021年07月23日 13:57:00
  */
+@ApiIgnore
 @RestController
 public class StuFooController {
 
