@@ -29,12 +29,4 @@ public enum Sex {
         this.type = type;
         this.value = value;
     }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public String getValue() {
-        return value;
-    }
 }
