@@ -3,6 +3,7 @@ package com.joker.service;
 import com.joker.pojo.*;
 import com.joker.pojo.vo.CommentLevelCountsVO;
 import com.joker.pojo.vo.ItemsCommentsVO;
+import com.joker.pojo.vo.SearchItemsVO;
 import com.joker.utils.PagedGridResult;
 
 import java.util.List;
@@ -71,5 +72,7 @@ public interface ItemService {
      * @ReviseTime 2021/7/27 14:15
      **/
     PagedGridResult queryItemComments(String itemId, Integer level, Integer page, Integer pageSize);
+
+    PagedGridResult searchItems(String keywords, String sort, Integer page, Integer pageSize);
 
 }

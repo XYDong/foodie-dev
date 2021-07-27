@@ -7,7 +7,9 @@ import com.joker.mapper.*;
 import com.joker.pojo.*;
 import com.joker.pojo.vo.CommentLevelCountsVO;
 import com.joker.pojo.vo.ItemsCommentsVO;
+import com.joker.pojo.vo.SearchItemsVO;
 import com.joker.service.ItemService;
+import com.joker.utils.DesensitizationUtil;
 import com.joker.utils.PagedGridResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -112,6 +114,7 @@ public class ItemServiceImpl implements ItemService {
         map.put("level",level);
         PageHelper.startPage(page,pageSize);
         List<ItemsCommentsVO> itemsCommentsVOS = itemsMapperCustom.queryItemComments(map);
+        itemsCommentsVOS.forEach(var -> var.setNickname(DesensitizationUtil.commonDisplay(var.getNickname())));
         return setPagedGrid(page, itemsCommentsVOS);
     }
 
@@ -122,5 +125,15 @@ public class ItemServiceImpl implements ItemService {
         pagedGridResult.setRows(list);
         pagedGridResult.setRecords(pageList.getTotal());
         return pagedGridResult;
+    }
+
+    @Override
+    public PagedGridResult searchItems(String keywords, String sort, Integer page, Integer pageSize) {
+        Map<String,Object> map = new HashMap<>(4);
+        map.put("keywords",keywords);
+        map.put("sort",sort);
+        PageHelper.startPage(page,pageSize);
+        List<SearchItemsVO> searchItemsVOS = itemsMapperCustom.searchItems(map);
+        return setPagedGrid(page,searchItemsVOS);
     }
 }

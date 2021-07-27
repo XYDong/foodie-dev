@@ -8,6 +8,7 @@ import com.joker.utils.PagedGridResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -128,9 +129,9 @@ public class ItemsController extends BaseController{
             @RequestParam String itemId,
             @ApiParam(name = "level", value = "评价等级")
             @RequestParam Integer level,
-            @ApiParam(name = "page", value = "评价等级", required = true)
+            @ApiParam(name = "page", value = "页码", required = true)
             @RequestParam Integer page,
-            @ApiParam(name = "pageSize", value = "评价等级", required = true)
+            @ApiParam(name = "pageSize", value = "每页展示数量", required = true)
             @RequestParam Integer pageSize){
         if (itemId == null) {
             return JSONResult.errorMsg("商品id为空");
@@ -144,6 +145,32 @@ public class ItemsController extends BaseController{
         PagedGridResult pagedGridResult = itemService.queryItemComments(itemId, level, page, pageSize);
         if (pagedGridResult == null) {
             return JSONResult.errorMsg("未查询到商品评价");
+        }
+        return JSONResult.ok(pagedGridResult);
+    }
+    @ApiOperation(value = "搜索商品列表",notes = "搜索商品列表  ",httpMethod = "GET")
+    @GetMapping("/searchItems")
+    public JSONResult searchItems(
+            @ApiParam(name = "keywords", value = "关键词",required = true)
+            @RequestParam String keywords,
+            @ApiParam(name = "sort", value = "排序规则")
+            @RequestParam String sort,
+            @ApiParam(name = "page", value = "页码", required = true)
+            @RequestParam Integer page,
+            @ApiParam(name = "pageSize", value = "每页展示数量", required = true)
+            @RequestParam Integer pageSize){
+        if (StringUtils.isBlank(keywords)) {
+            return JSONResult.errorMsg("请输入要查找的商品");
+        }
+        if (page == null) {
+            page = 1;
+        }
+        if (pageSize == null) {
+            pageSize = PAGE_SIZE;
+        }
+        PagedGridResult pagedGridResult = itemService.searchItems(keywords, sort, page, pageSize);
+        if (pagedGridResult == null) {
+            return JSONResult.errorMsg("未搜索到商品");
         }
         return JSONResult.ok(pagedGridResult);
     }
