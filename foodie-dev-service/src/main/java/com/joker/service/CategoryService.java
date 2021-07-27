@@ -2,6 +2,7 @@ package com.joker.service;
 
 import com.joker.pojo.Category;
 import com.joker.pojo.vo.CategoryVO;
+import com.joker.pojo.vo.NewItemsVO;
 
 import java.util.List;
 
@@ -22,4 +23,11 @@ public interface CategoryService {
      * @return
      */
     List<CategoryVO> getSubCatList(int rootCatId);
+
+    /**
+     * 查询每个一级分类下最新的6条商品数据
+     * @param rootCatId
+     * @return
+     */
+    List<NewItemsVO> getSixNewItemsLazy(int rootCatId);
 }

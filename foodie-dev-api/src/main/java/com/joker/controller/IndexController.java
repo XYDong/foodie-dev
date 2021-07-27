@@ -3,6 +3,7 @@ package com.joker.controller;
 import com.joker.pojo.Carousel;
 import com.joker.pojo.Category;
 import com.joker.pojo.vo.CategoryVO;
+import com.joker.pojo.vo.NewItemsVO;
 import com.joker.service.CarouselService;
 import com.joker.service.CategoryService;
 import com.joker.utils.JSONResult;
@@ -67,6 +68,20 @@ public class IndexController {
             return JSONResult.errorMsg("分类不存在");
         }
         List<CategoryVO> list = categoryService.getSubCatList(rootCatId);
+        if (list == null) {
+            return JSONResult.errorMsg("未查询到一级分类");
+        }
+        return JSONResult.ok(list);
+    }
+    @ApiOperation(value = "查询每个一级分类下最新的6条商品数据",notes = "查询每个一级分类下最新的6条商品数据",httpMethod = "GET")
+    @GetMapping("/sixNewItems/{rootCatId}")
+    public JSONResult sixNewItems(
+            @ApiParam(value = "一级分类id",name = "rootCatId",required = true)
+            @PathVariable Integer rootCatId){
+        if (rootCatId == null) {
+            return JSONResult.errorMsg("分类不存在");
+        }
+        List<NewItemsVO> list = categoryService.getSixNewItemsLazy(rootCatId);
         if (list == null) {
             return JSONResult.errorMsg("未查询到一级分类");
         }
