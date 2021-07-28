@@ -42,7 +42,7 @@ public class PassPortController {
 
     @ApiOperation(value = "注册", httpMethod = "POST",notes = "用户注册")
     @PostMapping("regist")
-    public JSONResult regist(@RequestBody UserBO userBO){
+    public JSONResult regist(@RequestBody UserBO userBO, HttpServletRequest request,HttpServletResponse response){
         // 判断入参
         String username = userBO.getUsername();
         String password = userBO.getPassword();
@@ -65,7 +65,11 @@ public class PassPortController {
             return JSONResult.errorMsg("两次密码输入不一致");
         }
         // 实现注册
-        userService.createUser(userBO);
+        Users users = userService.createUser(userBO);
+        setNullProperty(users);
+        CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(users),true);
+        // TODO 生成用户token，存入redis会话
+        // TODO 同步购物车数据
         return JSONResult.ok();
     }
 
@@ -87,6 +91,8 @@ public class PassPortController {
         }
         setNullProperty(users);
         CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(users),true);
+        // TODO 生成用户token，存入redis会话
+        // TODO 同步购物车数据
         return JSONResult.ok(users);
     }
 

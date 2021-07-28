@@ -8,6 +8,7 @@ import com.joker.pojo.*;
 import com.joker.pojo.vo.CommentLevelCountsVO;
 import com.joker.pojo.vo.ItemsCommentsVO;
 import com.joker.pojo.vo.SearchItemsVO;
+import com.joker.pojo.vo.ShopcartVO;
 import com.joker.service.ItemService;
 import com.joker.utils.DesensitizationUtil;
 import com.joker.utils.PagedGridResult;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,5 +137,22 @@ public class ItemServiceImpl implements ItemService {
         PageHelper.startPage(page,pageSize);
         List<SearchItemsVO> searchItemsVOS = itemsMapperCustom.searchItems(map);
         return setPagedGrid(page,searchItemsVOS);
+    }
+
+    @Override
+    public PagedGridResult searchItemsByThirdCat(String sort, Integer catId, Integer page, Integer pageSize) {
+        Map<String,Object> map = new HashMap<>(4);
+        map.put("sort",sort);
+        map.put("catId",catId);
+        PageHelper.startPage(page,pageSize);
+        List<SearchItemsVO> searchItemsVOS = itemsMapperCustom.searchItems(map);
+        return setPagedGrid(page,searchItemsVOS);
+    }
+
+    @Override
+    public List<ShopcartVO> queryItemsBySpecIds(String specIds) {
+        String[] split = specIds.split(",");
+        List<String> list = Arrays.asList(split);
+        return itemsMapperCustom.queryItemsBySpecIds(list);
     }
 }

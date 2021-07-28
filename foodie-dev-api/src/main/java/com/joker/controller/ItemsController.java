@@ -174,4 +174,53 @@ public class ItemsController extends BaseController{
         }
         return JSONResult.ok(pagedGridResult);
     }
+    @ApiOperation(value = "通过分类id搜索商品列表",notes = "搜索商品列表  ",httpMethod = "GET")
+    @GetMapping("/catItems")
+    public JSONResult catItems(
+            @ApiParam(name = "catId", value = "三级分类id",required = true)
+            @RequestParam Integer catId,
+            @ApiParam(name = "sort", value = "排序规则")
+            @RequestParam String sort,
+            @ApiParam(name = "page", value = "页码", required = true)
+            @RequestParam Integer page,
+            @ApiParam(name = "pageSize", value = "每页展示数量", required = true)
+            @RequestParam Integer pageSize){
+        if (catId == null) {
+            return JSONResult.errorMsg("请选择三级分类");
+        }
+        if (page == null) {
+            page = 1;
+        }
+        if (pageSize == null) {
+            pageSize = PAGE_SIZE;
+        }
+        PagedGridResult pagedGridResult = itemService.searchItemsByThirdCat(sort,catId, page, pageSize);
+        if (pagedGridResult == null) {
+            return JSONResult.errorMsg("未搜索到商品");
+        }
+        return JSONResult.ok(pagedGridResult);
+    }
+
+    /**
+     * 方法描述: <br>
+     * <p> 用于用户长时间未登录网站，刷新购物车中的数据（主要是商品价格），类似京东淘宝 </p>
+     *
+     * @Author Joker
+     * @CreateDate 2021/7/28 15:42
+     * @param itemSpecIds ids
+     * @return Object
+     * @ReviseName
+     * @ReviseTime 2021/7/28 15:42
+     **/
+    @ApiOperation(value = "根据规格ids查询最新的购物车中商品数据",notes = "根据规格ids查询最新的购物车中商品数据（用于刷新渲染购物车中的商品数据）",httpMethod = "POST")
+    @PostMapping("/refresh")
+    public Object add(
+            @ApiParam(name = "itemSpecIds",value = "拼接的规格ids",required = true,example = "1101,1002,1003")
+            @RequestParam String itemSpecIds){
+        if (StringUtils.isBlank(itemSpecIds)) {
+            return JSONResult.ok();
+        }
+        List<ShopcartVO> shopcartVOS = itemService.queryItemsBySpecIds(itemSpecIds);
+        return JSONResult.ok(shopcartVOS);
+    }
 }

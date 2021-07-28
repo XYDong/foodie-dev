@@ -1,8 +1,10 @@
 package com.joker.mapper;
 
 
+import com.joker.pojo.bo.ShopcartBO;
 import com.joker.pojo.vo.ItemsCommentsVO;
 import com.joker.pojo.vo.SearchItemsVO;
+import com.joker.pojo.vo.ShopcartVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -13,4 +15,8 @@ public interface ItemsMapperCustom {
     List<ItemsCommentsVO> queryItemComments(@Param("paramMap") Map<String,Object> paramMap);
 
     List<SearchItemsVO> searchItems(@Param("paramMap") Map<String,Object> paramMap);
+
+    List<SearchItemsVO> searchItemsByThirdCat(@Param("paramMap") Map<String,Object> paramMap);
+
+    public List<ShopcartVO> queryItemsBySpecIds(@Param("paramsList") List specIdsList);
 }
