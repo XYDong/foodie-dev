@@ -1,10 +1,10 @@
 package com.joker.service;
 
-import com.joker.pojo.*;
-import com.joker.pojo.bo.ShopcartBO;
+import com.joker.pojo.Items;
+import com.joker.pojo.ItemsImg;
+import com.joker.pojo.ItemsParam;
+import com.joker.pojo.ItemsSpec;
 import com.joker.pojo.vo.CommentLevelCountsVO;
-import com.joker.pojo.vo.ItemsCommentsVO;
-import com.joker.pojo.vo.SearchItemsVO;
 import com.joker.pojo.vo.ShopcartVO;
 import com.joker.utils.PagedGridResult;
 
@@ -112,6 +112,27 @@ public interface ItemService {
      * @param specIds
      * @return
      */
-    public List<ShopcartVO> queryItemsBySpecIds(String specIds);
+    List<ShopcartVO> queryItemsBySpecIds(String specIds);
+
+    /**
+     * 根据商品规格id获取规格对象的具体信息
+     * @param specId
+     * @return
+     */
+    ItemsSpec queryItemSpecById(String specId);
+
+    /**
+     * 根据商品id获得商品图片主图url
+     * @param itemId
+     * @return
+     */
+    String queryItemMainImgById(String itemId);
+
+    /**
+     * 减少库存
+     * @param specId
+     * @param buyCounts
+     */
+    void decreaseItemSpecStock(String specId, int buyCounts);
 
 }

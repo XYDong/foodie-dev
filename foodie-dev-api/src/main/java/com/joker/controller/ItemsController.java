@@ -140,7 +140,7 @@ public class ItemsController extends BaseController{
             page = 1;
         }
         if (pageSize == null) {
-            pageSize = COMMENT_PAGE_SIZE;
+            pageSize = COMMON_PAGE_SIZE;
         }
         PagedGridResult pagedGridResult = itemService.queryItemComments(itemId, level, page, pageSize);
         if (pagedGridResult == null) {
@@ -214,7 +214,7 @@ public class ItemsController extends BaseController{
      **/
     @ApiOperation(value = "根据规格ids查询最新的购物车中商品数据",notes = "根据规格ids查询最新的购物车中商品数据（用于刷新渲染购物车中的商品数据）",httpMethod = "POST")
     @PostMapping("/refresh")
-    public Object add(
+    public JSONResult add(
             @ApiParam(name = "itemSpecIds",value = "拼接的规格ids",required = true,example = "1101,1002,1003")
             @RequestParam String itemSpecIds){
         if (StringUtils.isBlank(itemSpecIds)) {

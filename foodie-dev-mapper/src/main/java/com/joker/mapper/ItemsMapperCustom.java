@@ -1,7 +1,6 @@
 package com.joker.mapper;
 
 
-import com.joker.pojo.bo.ShopcartBO;
 import com.joker.pojo.vo.ItemsCommentsVO;
 import com.joker.pojo.vo.SearchItemsVO;
 import com.joker.pojo.vo.ShopcartVO;
@@ -19,4 +18,7 @@ public interface ItemsMapperCustom {
     List<SearchItemsVO> searchItemsByThirdCat(@Param("paramMap") Map<String,Object> paramMap);
 
     public List<ShopcartVO> queryItemsBySpecIds(@Param("paramsList") List specIdsList);
+
+    public int decreaseItemSpecStock(@Param("specId") String specId,
+                                     @Param("pendingCounts") int pendingCounts);
 }
