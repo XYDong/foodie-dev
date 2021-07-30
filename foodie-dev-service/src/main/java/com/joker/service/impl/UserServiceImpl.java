@@ -5,7 +5,7 @@ import com.joker.mapper.UsersMapper;
 import com.joker.pojo.Users;
 import com.joker.pojo.bo.UserBO;
 import com.joker.service.UserService;
-import com.joker.utils.DateUtils;
+import com.joker.utils.DateUtil;
 import com.joker.utils.MD5Utils;
 import org.n3r.idworker.Sid;
 import org.springframework.stereotype.Service;
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
         }
         users.setNickname(userBO.getUsername());
         users.setFace(USER_FACE);
-        users.setBirthday(DateUtils.stringToDate("1900-01-01"));
+        users.setBirthday(DateUtil.stringToDate("1900-01-01"));
         users.setSex(Sex.secret.type);
         users.setCreatedTime(new Date());
         users.setUpdatedTime(new Date());

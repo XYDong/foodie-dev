@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
  * @Description 日期工具
  * @CreateTime 2021年07月26日 10:35:00
  */
-public class DateUtils {
+public class DateUtil {
     /**
      * Base ISO 8601 Date format yyyyMMdd i.e., 20021225 for the 25th day of December in the year 2002
      */

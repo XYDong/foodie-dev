@@ -13,7 +13,7 @@ public interface MyCommentsService {
      * @param orderId
      * @return
      */
-    public List<OrderItems> queryPendingComment(String orderId);
+    List<OrderItems> queryPendingComment(String orderId);
 
     /**
      * 保存用户的评论
@@ -21,7 +21,7 @@ public interface MyCommentsService {
      * @param userId
      * @param commentList
      */
-    public void saveComments(String orderId, String userId, List<OrderItemsCommentBO> commentList);
+    void saveComments(String orderId, String userId, List<OrderItemsCommentBO> commentList);
 
 
     /**
@@ -31,5 +31,5 @@ public interface MyCommentsService {
      * @param pageSize
      * @return
      */
-    public PagedGridResult queryMyComments(String userId, Integer page, Integer pageSize);
+    PagedGridResult queryMyComments(String userId, Integer page, Integer pageSize);
 }

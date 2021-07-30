@@ -15,15 +15,15 @@ public interface MyOrdersService {
      * @param pageSize
      * @return
      */
-    public PagedGridResult queryMyOrders(String userId,
-                                         Integer orderStatus,
-                                         Integer page,
-                                         Integer pageSize);
+    PagedGridResult queryMyOrders(String userId,
+                                  Integer orderStatus,
+                                  Integer page,
+                                  Integer pageSize);
 
     /**
      * @Description: 订单状态 --> 商家发货
      */
-    public void updateDeliverOrderStatus(String orderId);
+    void updateDeliverOrderStatus(String orderId);
 
     /**
      * 查询我的订单
@@ -32,14 +32,14 @@ public interface MyOrdersService {
      * @param orderId
      * @return
      */
-    public Orders queryMyOrder(String userId, String orderId);
+    Orders queryMyOrder(String userId, String orderId);
 
     /**
      * 更新订单状态 —> 确认收货
      *
      * @return
      */
-    public boolean updateReceiveOrderStatus(String orderId);
+    boolean updateReceiveOrderStatus(String orderId);
 
     /**
      * 删除订单（逻辑删除）
@@ -47,13 +47,13 @@ public interface MyOrdersService {
      * @param orderId
      * @return
      */
-    public boolean deleteOrder(String userId, String orderId);
+    boolean deleteOrder(String userId, String orderId);
 
     /**
      * 查询用户订单数
      * @param userId
      */
-    public OrderStatusCountsVO getOrderStatusCounts(String userId);
+    OrderStatusCountsVO getOrderStatusCounts(String userId);
 
     /**
      * 获得分页的订单动向
@@ -62,7 +62,7 @@ public interface MyOrdersService {
      * @param pageSize
      * @return
      */
-    public PagedGridResult getOrdersTrend(String userId,
-                                          Integer page,
-                                          Integer pageSize);
+    PagedGridResult getOrdersTrend(String userId,
+                                   Integer page,
+                                   Integer pageSize);
 }

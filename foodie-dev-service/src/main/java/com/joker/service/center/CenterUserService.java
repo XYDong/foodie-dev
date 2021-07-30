@@ -10,14 +10,14 @@ public interface CenterUserService {
      * @param userId
      * @return
      */
-    public Users queryUserInfo(String userId);
+    Users queryUserInfo(String userId);
 
     /**
      * 修改用户信息
      * @param userId
      * @param centerUserBO
      */
-    public Users updateUserInfo(String userId, CenterUserBO centerUserBO);
+    Users updateUserInfo(String userId, CenterUserBO centerUserBO);
 
     /**
      * 用户头像更新
@@ -25,5 +25,5 @@ public interface CenterUserService {
      * @param faceUrl
      * @return
      */
-    public Users updateUserFace(String userId, String faceUrl);
+    Users updateUserFace(String userId, String faceUrl);
 }

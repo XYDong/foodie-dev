@@ -12,7 +12,7 @@ import com.joker.pojo.vo.OrderVO;
 import com.joker.service.AddressService;
 import com.joker.service.ItemService;
 import com.joker.service.OrderService;
-import com.joker.utils.DateUtils;
+import com.joker.utils.DateUtil;
 import org.n3r.idworker.Sid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -179,7 +179,7 @@ public class OrderServiceImpl implements OrderService {
             // 获得订单创建时间
             Date createdTime = os.getCreatedTime();
             // 和当前时间进行对比
-            int days = DateUtils.daysBetween(createdTime, new Date());
+            int days = DateUtil.daysBetween(createdTime, new Date());
             if (days >= 1) {
                 // 超过1天，关闭订单
                 doCloseOrder(os.getOrderId());
