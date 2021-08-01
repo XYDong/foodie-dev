@@ -16,11 +16,14 @@ import java.util.Date;
 @Service
 public class CenterUserServiceImpl implements CenterUserService {
 
-    @Autowired
-    public UsersMapper usersMapper;
+    public final UsersMapper usersMapper;
 
-    @Autowired
-    private Sid sid;
+    private final Sid sid;
+
+    public CenterUserServiceImpl(UsersMapper usersMapper, Sid sid) {
+        this.usersMapper = usersMapper;
+        this.sid = sid;
+    }
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override

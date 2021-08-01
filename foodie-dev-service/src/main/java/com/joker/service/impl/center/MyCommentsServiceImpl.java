@@ -27,20 +27,23 @@ import java.util.Map;
 @Service
 public class MyCommentsServiceImpl extends BaseService implements MyCommentsService {
 
-    @Autowired
-    public OrderItemsMapper orderItemsMapper;
+    public final OrderItemsMapper orderItemsMapper;
 
-    @Autowired
-    public OrdersMapper ordersMapper;
+    public final OrdersMapper ordersMapper;
 
-    @Autowired
-    public OrderStatusMapper orderStatusMapper;
+    public final OrderStatusMapper orderStatusMapper;
 
-    @Autowired
-    public ItemsCommentsMapperCustom itemsCommentsMapperCustom;
+    public final ItemsCommentsMapperCustom itemsCommentsMapperCustom;
 
-    @Autowired
-    private Sid sid;
+    private final Sid sid;
+
+    public MyCommentsServiceImpl(OrderItemsMapper orderItemsMapper, OrdersMapper ordersMapper, OrderStatusMapper orderStatusMapper, ItemsCommentsMapperCustom itemsCommentsMapperCustom, Sid sid) {
+        this.orderItemsMapper = orderItemsMapper;
+        this.ordersMapper = ordersMapper;
+        this.orderStatusMapper = orderStatusMapper;
+        this.itemsCommentsMapperCustom = itemsCommentsMapperCustom;
+        this.sid = sid;
+    }
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override

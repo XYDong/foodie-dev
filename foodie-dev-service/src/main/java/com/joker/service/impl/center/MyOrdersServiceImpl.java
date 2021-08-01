@@ -26,14 +26,17 @@ import java.util.Map;
 @Service
 public class MyOrdersServiceImpl extends BaseService implements MyOrdersService {
 
-    @Autowired
-    public OrdersMapperCustom ordersMapperCustom;
+    public final OrdersMapperCustom ordersMapperCustom;
 
-    @Autowired
-    public OrdersMapper ordersMapper;
+    public final OrdersMapper ordersMapper;
 
-    @Autowired
-    public OrderStatusMapper orderStatusMapper;
+    public final OrderStatusMapper orderStatusMapper;
+
+    public MyOrdersServiceImpl(OrdersMapperCustom ordersMapperCustom, OrdersMapper ordersMapper, OrderStatusMapper orderStatusMapper) {
+        this.ordersMapperCustom = ordersMapperCustom;
+        this.ordersMapper = ordersMapper;
+        this.orderStatusMapper = orderStatusMapper;
+    }
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
