@@ -5,6 +5,11 @@ spring:
   datasource:                                           # 数据源的相关配置
     url: jdbc:mysql://49.233.171.234:3306/foodie-shop?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
     password: X292322746
+  redis:
+    password: X147852
+    database: 1
+    host: 49.233.171.234
+    port: 6379
 
 mybatis:
   configuration:
