@@ -6,6 +6,7 @@ import com.joker.mapper.OrderItemsMapper;
 import com.joker.mapper.OrderStatusMapper;
 import com.joker.mapper.OrdersMapper;
 import com.joker.pojo.*;
+import com.joker.pojo.bo.ShopcartBO;
 import com.joker.pojo.bo.SubmitOrderBO;
 import com.joker.pojo.vo.MerchantOrdersVO;
 import com.joker.pojo.vo.OrderVO;
@@ -13,11 +14,13 @@ import com.joker.service.AddressService;
 import com.joker.service.ItemService;
 import com.joker.service.OrderService;
 import com.joker.utils.DateUtil;
+import com.joker.utils.RedisOperator;
 import org.n3r.idworker.Sid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,18 +39,23 @@ public class OrderServiceImpl implements OrderService {
 
     private final Sid sid;
 
-    public OrderServiceImpl(OrdersMapper ordersMapper, OrderItemsMapper orderItemsMapper, OrderStatusMapper orderStatusMapper, AddressService addressService, ItemService itemService, Sid sid) {
+    private final RedisOperator redisOperator;
+
+    public OrderServiceImpl(OrdersMapper ordersMapper, OrderItemsMapper orderItemsMapper,
+                            OrderStatusMapper orderStatusMapper, AddressService addressService,
+                            ItemService itemService, Sid sid, RedisOperator redisOperator) {
         this.ordersMapper = ordersMapper;
         this.orderItemsMapper = orderItemsMapper;
         this.orderStatusMapper = orderStatusMapper;
         this.addressService = addressService;
         this.itemService = itemService;
         this.sid = sid;
+        this.redisOperator = redisOperator;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public OrderVO createOrder(SubmitOrderBO submitOrderBO) {
+    public OrderVO createOrder(List<ShopcartBO> shopcartBOS, SubmitOrderBO submitOrderBO) {
 
         String userId = submitOrderBO.getUserId();
         String addressId = submitOrderBO.getAddressId();
@@ -69,9 +77,9 @@ public class OrderServiceImpl implements OrderService {
         newOrder.setReceiverName(address.getReceiver());
         newOrder.setReceiverMobile(address.getMobile());
         newOrder.setReceiverAddress(address.getProvince() + " "
-                                    + address.getCity() + " "
-                                    + address.getDistrict() + " "
-                                    + address.getDetail());
+                + address.getCity() + " "
+                + address.getDistrict() + " "
+                + address.getDetail());
 
 //        newOrder.setTotalAmount();
 //        newOrder.setRealPayAmount();
@@ -90,11 +98,13 @@ public class OrderServiceImpl implements OrderService {
         String itemSpecIdArr[] = itemSpecIds.split(",");
         Integer totalAmount = 0;    // 商品原价累计
         Integer realPayAmount = 0;  // 优惠后的实际支付价格累计
+        List<ShopcartBO> toBeRemovedShopcartList = new ArrayList<>();
         for (String itemSpecId : itemSpecIdArr) {
 
-            // TODO 整合redis后，商品购买的数量重新从redis的购物车中获取
-            int buyCounts = 1;
-
+            // 整合redis后，商品购买的数量重新从redis的购物车中获取
+            ShopcartBO shopcart = getBuyCountsFromShopcart(shopcartBOS, itemSpecId);
+            int buyCounts = shopcart.getBuyCounts();
+            toBeRemovedShopcartList.add(shopcart);
             // 2.1 根据规格id，查询规格的具体信息，主要获取价格
             ItemsSpec itemSpec = itemService.queryItemSpecById(itemSpecId);
             totalAmount += itemSpec.getPriceNormal() * buyCounts;
@@ -145,8 +155,31 @@ public class OrderServiceImpl implements OrderService {
         OrderVO orderVO = new OrderVO();
         orderVO.setOrderId(orderId);
         orderVO.setMerchantOrdersVO(merchantOrdersVO);
+        orderVO.setToBeRemovedShopcartList(toBeRemovedShopcartList);
 
         return orderVO;
+    }
+
+    /**
+     * 方法描述: <br>
+     * <p> 从redis中的购物车获取商品 </p>
+     *
+     * @Author Joker
+     * @CreateDate 2021/8/6 10:07
+     * @param shopcartBOS 购物车
+     * @param itemSpecId 购买的商品规格id
+     * @return ShopcartBO 商品
+     * @ReviseName
+     * @ReviseTime 2021/8/6 10:07
+     **/
+    private ShopcartBO getBuyCountsFromShopcart(List<ShopcartBO> shopcartBOS, String itemSpecId) {
+        for (ShopcartBO shopcartBO : shopcartBOS) {
+            String specId = shopcartBO.getSpecId();
+            if (specId.equals(itemSpecId)) {
+                return shopcartBO;
+            }
+        }
+        return null;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

@@ -1,16 +1,20 @@
 package com.joker.service;
 
 import com.joker.pojo.OrderStatus;
+import com.joker.pojo.bo.ShopcartBO;
 import com.joker.pojo.bo.SubmitOrderBO;
 import com.joker.pojo.vo.OrderVO;
+
+import java.util.List;
 
 public interface OrderService {
 
     /**
      * 用于创建订单相关信息
+     * @param shopcartBOS
      * @param submitOrderBO
      */
-    public OrderVO createOrder(SubmitOrderBO submitOrderBO);
+    public OrderVO createOrder(List<ShopcartBO> shopcartBOS, SubmitOrderBO submitOrderBO);
 
     /**
      * 修改订单状态

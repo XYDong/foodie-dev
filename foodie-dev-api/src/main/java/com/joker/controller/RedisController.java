@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @version 1.0.0
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @CreateTime 2021年07月23日 13:57:00
  */
 @RestController
-//@ApiIgnore
+@ApiIgnore
 @RequestMapping("redis")
 public class RedisController {
 
