@@ -7,7 +7,7 @@
         <result column="name" property="name"/>
         <result column="type" property="type"/>
         <result column="fatherId" property="fatherId"/>
-        <collection property="subCategoryVOs" ofType="com.joker.pojo.vo.SubCategoryVO">
+        <collection property="subCatList" ofType="com.joker.pojo.vo.SubCategoryVO">
             <id column="subId" property="subId"/>
             <result column="subName" property="subName"/>
             <result column="subType" property="subType"/>
@@ -20,7 +20,7 @@
         <result column="slogan" property="slogan"/>
         <result column="catImage" property="catImage"/>
         <result column="bgColor" property="bgColor"/>
-        <collection property="subNewItemsVOS" ofType="com.joker.pojo.vo.SubNewItemsVO">
+        <collection property="simpleItemList" ofType="com.joker.pojo.vo.SubNewItemsVO">
             <id column="itemId" property="itemId"/>
             <result column="itemName" property="itemName"/>
             <result column="itemUrl" property="itemUrl"/>

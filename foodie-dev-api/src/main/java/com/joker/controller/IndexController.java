@@ -47,11 +47,11 @@ public class IndexController {
      */
     @ApiOperation(value = "获取首页轮播图列表",notes = "获取首页轮播图列表",httpMethod = "GET")
     @GetMapping("/carousel")
-    public JSONResult carousel(@RequestParam int isShow){
+    public JSONResult carousel(){
         String carouselStr = redisOperator.get("carousel");
         List<Carousel> carousels;
         if (StringUtils.isBlank(carouselStr)) {
-            carousels = carouselService.queryAll(isShow);
+            carousels = carouselService.queryAll();
             redisOperator.set("carousel", JsonUtils.objectToJson(carousels));
         } else {
             carousels = JsonUtils.jsonToList(carouselStr, Carousel.class);
@@ -70,13 +70,13 @@ public class IndexController {
      */
 
     @ApiOperation(value = "获取商品分类（一级）",notes = "获取商品分类（一级）",httpMethod = "GET")
-    @GetMapping("/category")
+    @GetMapping("/cats")
     public JSONResult category(){
-        String categoriesStr = redisOperator.get("categories");
+        String categoriesStr = redisOperator.get("cat");
         List<Category> categories;
         if (StringUtils.isBlank(categoriesStr)) {
             categories = categoryService.queryAllRootLevelCat();
-            redisOperator.set("categories",JsonUtils.objectToJson(categories));
+            redisOperator.set("cat",JsonUtils.objectToJson(categories));
         } else {
             categories = JsonUtils.jsonToList(categoriesStr,Category.class);
         }
@@ -90,22 +90,20 @@ public class IndexController {
     public JSONResult subcategory(
             @ApiParam(value = "一级分类id",name = "rootCatId",required = true)
             @PathVariable Integer rootCatId){
-        if (rootCatId == null) {
-            return JSONResult.errorMsg("分类不存在");
-        }
-
-        String subCatsStr = redisOperator.get("subCat:" + rootCatId);
-        List<CategoryVO> subCats;
-        if (StringUtils.isBlank(subCatsStr)) {
-            subCats = categoryService.getSubCatList(rootCatId);
-            redisOperator.set("subCat:"+rootCatId,JsonUtils.objectToJson(subCats));
+        List<CategoryVO> list = null;
+        String subCatStr = redisOperator.get("subCat:" + rootCatId);
+        if (StringUtils.isBlank(subCatStr)) {
+            list = categoryService.getSubCatList(rootCatId);
+            if (list != null && list.size() > 0) {
+                // 为空的时候，设置缓存时间为 5 分钟
+                redisOperator.set("subCat:" + rootCatId, JsonUtils.objectToJson(list), 60 * 5);
+            } else {
+                redisOperator.set("subCat:" + rootCatId, JsonUtils.objectToJson(list));
+            }
         } else {
-            subCats = JsonUtils.jsonToList(subCatsStr,CategoryVO.class);
+            list = JsonUtils.jsonToList(subCatStr, CategoryVO.class);
         }
-        if (subCats == null) {
-            return JSONResult.errorMsg("未查询到一级分类");
-        }
-        return JSONResult.ok(subCats);
+        return JSONResult.ok(list);
     }
     @ApiOperation(value = "查询每个一级分类下最新的6条商品数据",notes = "查询每个一级分类下最新的6条商品数据",httpMethod = "GET")
     @GetMapping("/sixNewItems/{rootCatId}")

@@ -21,7 +21,7 @@ public class CategoryVO {
     private String type;
     @ApiModelProperty(value = "父菜单id",name = "fatherId",notes = "父菜单id")
     private Integer fatherId;
-    @ApiModelProperty(value = "三级菜单",name = "subCategoryVOs",notes = "三级菜单列表")
-    private List<SubCategoryVO> subCategoryVOs;
+    @ApiModelProperty(value = "三级菜单",name = "subCatList",notes = "三级菜单列表")
+    private List<SubCategoryVO> subCatList;
 
 }

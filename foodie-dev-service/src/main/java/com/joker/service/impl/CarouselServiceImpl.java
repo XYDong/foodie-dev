@@ -28,11 +28,9 @@ public class CarouselServiceImpl implements CarouselService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public List<Carousel> queryAll(Integer isShow) {
+    public List<Carousel> queryAll() {
         Example example = new Example(Carousel.class);
         example.orderBy("sort").desc();
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("isShow",isShow);
         return carouselMapper.selectByExample(example);
     }
 }

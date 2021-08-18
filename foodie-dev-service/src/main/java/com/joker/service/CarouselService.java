@@ -20,11 +20,10 @@ public interface CarouselService {
      *
      * @Author Joker
      * @CreateDate 2021/7/26 15:55
-     * @param isShow 是否显示
      * @return List<Carousel>
      * @ReviseName
      * @ReviseTime 2021/7/26 15:55
      **/
-    List<Carousel> queryAll(Integer isShow);
+    List<Carousel> queryAll();
 
 }

@@ -28,7 +28,7 @@ public class NewItemsVO {
     private String catImage;
     @ApiModelProperty(value = "菜单颜色",name = "bgColor",notes = "菜单颜色")
     private String bgColor;
-    @ApiModelProperty(value = "商品列表",name = "subNewItemsVOS",notes = "商品列表")
-    private List<SubNewItemsVO> subNewItemsVOS;
+    @ApiModelProperty(value = "商品列表",name = "simpleItemList",notes = "商品列表")
+    private List<SubNewItemsVO> simpleItemList;
 
 }

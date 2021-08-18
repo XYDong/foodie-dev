@@ -17,7 +17,7 @@ import springfox.documentation.annotations.ApiIgnore;
  * @CreateTime 2021年07月23日 13:57:00
  */
 @RestController
-@ApiIgnore
+//@ApiIgnore
 @RequestMapping("redis")
 public class RedisController {
 

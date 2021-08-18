@@ -3,6 +3,7 @@ package com.joker.controller;
 import com.joker.pojo.Users;
 import com.joker.pojo.bo.ShopcartBO;
 import com.joker.pojo.bo.UserBO;
+import com.joker.pojo.vo.UsersVO;
 import com.joker.service.UserService;
 import com.joker.utils.CookieUtils;
 import com.joker.utils.JSONResult;
@@ -72,14 +73,16 @@ public class PassPortController extends BaseController {
             return JSONResult.errorMsg("两次密码输入不一致");
         }
         // 实现注册
-        Users users = userService.createUser(userBO);
-        setNullProperty(users);
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(users), true);
-        // TODO 生成用户token，存入redis会话
-        // TODO 同步购物车数据
-        syncShopcartData(users.getId(),request,response);
+        Users userResult = userService.createUser(userBO);
+//        setNullProperty(userResult);
+        // 生成用户token，存入redis会话
+        UsersVO usersVO = userConvertVO(userResult);
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(usersVO), true);
+        // 同步购物车数据
+        syncShopcartData(userResult.getId(),request,response);
         return JSONResult.ok();
     }
+
 
     /**
      * 方法描述: <br>
@@ -170,10 +173,11 @@ public class PassPortController extends BaseController {
         if (users == null) {
             return JSONResult.errorMsg("用户名或密码错误");
         }
-        setNullProperty(users);
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(users), true);
-        // TODO 生成用户token，存入redis会话
-        // TODO 同步购物车数据
+        UsersVO usersVO = userConvertVO(users);
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(usersVO), true);
+        // 生成用户token，存入redis会话
+        // 同步购物车数据
+        syncShopcartData(users.getId(),request,response);
         return JSONResult.ok(users);
     }
 
@@ -201,9 +205,10 @@ public class PassPortController extends BaseController {
     public JSONResult logout(@RequestParam String userId, HttpServletRequest request, HttpServletResponse response) {
         // 清除用户cookie信息
         CookieUtils.deleteCookie(request, response, "user");
-        // TODO 用户退出登录，清空购物车
-        // TODO 分布式会话中需要清除用户数据
-
+        // 分布式会话中需要清除用户数据
+        redisOperator.del(REDIS_USER_TOKEN + ":" + userId);
+        // 用户退出登录，清空购物车
+        CookieUtils.deleteCookie(request,response,FOODIE_SHOPCART);
         return JSONResult.ok();
     }
 

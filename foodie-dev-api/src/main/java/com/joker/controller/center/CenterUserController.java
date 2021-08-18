@@ -3,12 +3,10 @@ package com.joker.controller.center;
 import com.joker.controller.BaseController;
 import com.joker.pojo.Users;
 import com.joker.pojo.bo.center.CenterUserBO;
+import com.joker.pojo.vo.UsersVO;
 import com.joker.resource.FileUpload;
 import com.joker.service.center.CenterUserService;
-import com.joker.utils.CookieUtils;
-import com.joker.utils.DateUtil;
-import com.joker.utils.JSONResult;
-import com.joker.utils.JsonUtils;
+import com.joker.utils.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -127,12 +125,12 @@ public class CenterUserController extends BaseController {
         // 更新用户头像到数据库
         Users userResult = centerUserService.updateUserFace(userId, finalUserFaceUrl);
 
-        userResult = setNullProperty(userResult);
-        CookieUtils.setCookie(request, response, "user",
-                JsonUtils.objectToJson(userResult), true);
+//        userResult = setNullProperty(userResult);
 
         // TODO 后续要改，增加令牌token，会整合进redis，分布式会话
-
+        UsersVO usersVO = userConvertVO(userResult);
+        CookieUtils.setCookie(request, response, "user",
+                JsonUtils.objectToJson(usersVO), true);
         return JSONResult.ok();
     }
 
@@ -157,11 +155,13 @@ public class CenterUserController extends BaseController {
 
         Users userResult = centerUserService.updateUserInfo(userId, centerUserBO);
 
-        userResult = setNullProperty(userResult);
-        CookieUtils.setCookie(request, response, "user",
-                JsonUtils.objectToJson(userResult), true);
+//        userResult = setNullProperty(userResult);
 
-        // TODO 后续要改，增加令牌token，会整合进redis，分布式会话
+        // 后续要改，增加令牌token，会整合进redis，分布式会话
+        UsersVO usersVO = userConvertVO(userResult);
+
+        CookieUtils.setCookie(request, response, "user",
+                JsonUtils.objectToJson(usersVO), true);
 
         return JSONResult.ok();
     }

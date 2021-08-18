@@ -90,6 +90,7 @@ public class OrdersController extends BaseController {
          * 4004
          */
         // 整合redis之后，完善购物车中的已结算商品清除，并且同步到前端的cookie
+        assert shopcartBOS != null;
         shopcartBOS.removeAll(orderVO.getToBeRemovedShopcartList());
         redisOperator.set(FOODIE_SHOPCART+":"+submitOrderBO.getUserId(),JsonUtils.objectToJson(shopcartBOS));
         CookieUtils.setCookie(request, response, FOODIE_SHOPCART, "", true);
