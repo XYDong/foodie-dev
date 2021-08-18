@@ -44,10 +44,10 @@ public class ItemsController extends BaseController{
         List<ItemsSpec> itemsSpecs = itemService.queryItemSpecList(itemId);
         ItemsParam itemsParam = itemService.queryItemParam(itemId);
         ItemInfoVO itemInfoVO = new ItemInfoVO();
-        itemInfoVO.setItems(item);
-        itemInfoVO.setItemsImgs(itemsImgs);
-        itemInfoVO.setItemsSpecs(itemsSpecs);
-        itemInfoVO.setItemsParam(itemsParam);
+        itemInfoVO.setItem(item);
+        itemInfoVO.setItemImgList(itemsImgs);
+        itemInfoVO.setItemSpecList(itemsSpecs);
+        itemInfoVO.setItemParams(itemsParam);
         return JSONResult.ok(itemInfoVO);
     }
     @ApiOperation(value = "获取商品详情",notes = "获取商品详情",httpMethod = "GET")
@@ -149,8 +149,8 @@ public class ItemsController extends BaseController{
         return JSONResult.ok(pagedGridResult);
     }
     @ApiOperation(value = "搜索商品列表",notes = "搜索商品列表  ",httpMethod = "GET")
-    @GetMapping("/searchItems")
-    public JSONResult searchItems(
+    @GetMapping("/search")
+    public JSONResult search(
             @ApiParam(name = "keywords", value = "关键词",required = true)
             @RequestParam String keywords,
             @ApiParam(name = "sort", value = "排序规则")
