@@ -64,11 +64,7 @@ public class UserServiceImpl implements UserService {
         Example example = new Example(Users.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("username", username);
-        try {
-            criteria.andEqualTo("password", MD5Utils.getMD5Str(password));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        criteria.andEqualTo("password", password);
         return usersMapper.selectOneByExample(example);
     }
 }

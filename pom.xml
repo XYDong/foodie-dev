@@ -13,6 +13,7 @@
         <module>foodie-dev-mapper</module>
         <module>foodie-dev-service</module>
         <module>foodie-dev-api</module>
+        <module>foodie-sso</module>
     </modules>
     <!--
         1.合工程合一分为顶级项目（顶级工程、父工程）与子工程，这两者的关系其实就是父子继承的关系
@@ -171,16 +172,16 @@
 <!--            <artifactId>javax.servlet-api</artifactId>-->
 <!--            <scope>provided</scope>-->
 <!--        </dependency>-->
-        <!-- 引入 Spring session redis 依赖  -->
-        <dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-data-redis</artifactId>
-        </dependency>
-        <!--引入spring安全框架-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+<!--        &lt;!&ndash; 引入 Spring session redis 依赖  &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.session</groupId>-->
+<!--            <artifactId>spring-session-data-redis</artifactId>-->
+<!--        </dependency>-->
+<!--        &lt;!&ndash;引入spring安全框架&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-security</artifactId>-->
+<!--        </dependency>-->
         <!--引入redis依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

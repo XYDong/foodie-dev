@@ -5,10 +5,7 @@ import com.joker.pojo.bo.ShopcartBO;
 import com.joker.pojo.bo.UserBO;
 import com.joker.pojo.vo.UsersVO;
 import com.joker.service.UserService;
-import com.joker.utils.CookieUtils;
-import com.joker.utils.JSONResult;
-import com.joker.utils.JsonUtils;
-import com.joker.utils.RedisOperator;
+import com.joker.utils.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -169,7 +166,12 @@ public class PassPortController extends BaseController {
             return JSONResult.errorMsg("用户名或密码不能为空");
         }
         // 实现登录
-        Users users = userService.queryUserForLogin(username, password);
+        Users users = null;
+        try {
+            users = userService.queryUserForLogin(username, MD5Utils.getMD5Str(password));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (users == null) {
             return JSONResult.errorMsg("用户名或密码错误");
         }
